@@ -1,0 +1,27 @@
+* What
+
+This is a program that performs a [[https://www.w3.org/TR/webauthn-2/][WebAuthn]] flow against a [[https://www.paloaltonetworks.com/sase/globalprotect][GlobalProtect]] VPN endpoint utilizing [[https://www.okta.com/][Okta]] and a [[https://fidoalliance.org/fido2/][FIDO2]] authenticator (e.g. a [[https://en.wikipedia.org/wiki/YubiKey][Yubikey]]), starts [[https://gitlab.com/openconnect/openconnect][OpenConnect]], and then passes the pre-login cookie obtained. It contains as few dependencies as possible.
+
+* Disclaimer
+
+I know very little about WebAuthn and FIDO2, and this program hasn't been audited. Please use at your own risk. Still, it works for me.
+
+I have very little free time and can't field any support requests.
+
+* How
+
+#+begin_example
+$ openconnect-gp-okta -username elliot -password-command 'echo tyEsmail' -device-pin 1234 -vpn-endpoint myvpn.example.org -openconnect-args='--reconnect-timeout --csd-wrapper=/run/current-system/profile/libexec/hipreport.sh'
+#+end_example
+
+Please note that the values here are made up and you should populate them with values specific to your situation.
+
+* Building
+
+If you're running [[https://guix.gnu.org][Guix]], you can run =guix build -fpackage.scm=. If you're not, you can use standard Go tooling:
+
+#+begin_example
+CGO_LDFLAGS="-L/usr/lib" CGO_CFLAGS="-I/usr/include" go install github.com/kat-co/openconnect-gp-okta@latest
+#+end_example
+
+PRs are welcome, but I may not look at them for a long, long, time. I apologize in advance.
